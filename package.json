@@ -1,0 +1,164 @@
+{
+  "name": "deepseek-completer",
+  "displayName": "DeepSeek Completer",
+  "description": "DeepSeek AI-powered code completion with multi-line and tab chaining",
+  "version": "0.1.0",
+  "publisher": "your-publisher-name",
+  "type": "module",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:typescript",
+    "onLanguage:javascript",
+    "onLanguage:python",
+    "onLanguage:java",
+    "onLanguage:c",
+    "onLanguage:cpp",
+    "onLanguage:go",
+    "onLanguage:ruby",
+    "onLanguage:php"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "deepseek-completer.setApiKey",
+        "title": "DeepSeek: Set API Key"
+      },
+      {
+        "command": "deepseek-completer.handleTabPress",
+        "title": "DeepSeek: Handle Tab Press"
+      },
+      {
+        "command": "deepseek-completer.showPerformanceStats",
+        "title": "DeepSeek: Show Performance Stats"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "DeepSeek Completer Configuration",
+      "properties": {
+        "deepseek-completer.apiKey": {
+          "type": "string",
+          "description": "Your DeepSeek API Key. Stored securely. Deprecated: Use the Set API Key command instead.",
+          "default": "",
+          "deprecationMessage": "Use the Set API Key command instead."
+        },
+        "deepseek-completer.model": {
+          "type": "string",
+          "default": "deepseek-coder",
+          "description": "DeepSeek model to use (e.g., deepseek-coder, deepseek-chat)."
+        },
+        "deepseek-completer.maxTokens": {
+          "type": "number",
+          "default": 256,
+          "description": "Max tokens for completion response."
+        },
+        "deepseek-completer.requestTimeout": {
+          "type": "number",
+          "default": 8000,
+          "description": "Timeout for API requests in milliseconds."
+        },
+        "deepseek-completer.debounceDelay": {
+          "type": "number",
+          "default": 300,
+          "description": "Delay after typing stops before triggering completion."
+        },
+        "deepseek-completer.showErrors": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show non-intrusive notifications for API or processing errors."
+        },
+        "deepseek-completer.enableInlineCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable inline ghost text completions."
+        },
+        "deepseek-completer.contextLinesAbove": {
+          "type": "number",
+          "default": 50,
+          "description": "Number of lines above the cursor to include in context."
+        },
+        "deepseek-completer.contextLinesBelow": {
+          "type": "number",
+          "default": 20,
+          "description": "Number of lines below the cursor to include in context."
+        },
+        "deepseek-completer.contextMaxPromptChars": {
+          "type": "number",
+          "default": 8000,
+          "description": "Maximum characters for the prompt context."
+        },
+        "deepseek-completer.contextMaxSuffixChars": {
+          "type": "number",
+          "default": 4000,
+          "description": "Maximum characters for the suffix context."
+        },
+        "deepseek-completer.enableProjectContext": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable project-wide context integration (Experimental, Phase 4)."
+        },
+        "deepseek-completer.projectScanDepth": {
+          "type": "number",
+          "default": 3,
+          "description": "Maximum folder depth to scan for project files."
+        },
+        "deepseek-completer.projectIncludePatterns": {
+          "type": "array",
+          "default": ["**/*.ts", "**/*.js", "**/*.py"],
+          "description": "Glob patterns for files to include in project analysis.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deepseek-completer.projectExcludePatterns": {
+          "type": "array",
+          "default": ["**/node_modules/**", "**/.git/**"],
+          "description": "Glob patterns for files to exclude from project analysis.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deepseek-completer.maxProjectContextFiles": {
+          "type": "number",
+          "default": 5,
+          "description": "Maximum number of project files to include in context."
+        },
+        "deepseek-completer.maxProjectContextSize": {
+          "type": "number",
+          "default": 8000,
+          "description": "Maximum total characters of project context snippets."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "deepseek-completer.handleTabPress",
+        "key": "tab",
+        "when": "editorTextFocus && !editorHasSelection && !editorHasMultipleSelections && !editorReadonly && !inputFocus && config.deepseek-completer.enableInlineCompletion"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/node-fetch": "^2.6.12",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "abort-controller": "^3.0.0",
+    "node-fetch": "^2.6.7"
+  }
+}
