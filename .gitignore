@@ -1,3 +1,6 @@
 /planning
 /node_modules
 package-lock.json
+.env
+*.md
+!README.md
